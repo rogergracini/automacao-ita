@@ -18,7 +18,7 @@ Tudo acontece **sem depender de hospedagens externas**, como HostGator ou Replit
 ## 🔄 Automatização via GitHub Actions
 
 Arquivo do workflow:  
-`.github/workflows/extrair-e-salvar.yml`
+`.github/workflows/extrair-e-commitar.yml`
 
 ### ⏰ Agendamento automático
 Executado todos os dias às **5h (Horário de Brasília)**:
