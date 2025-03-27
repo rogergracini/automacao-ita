@@ -1,0 +1,40 @@
+name: Extrair XMLs e salvar no repositório
+
+on:
+  workflow_dispatch:  # Execução manual
+
+jobs:
+  extrair-e-commitar:
+    runs-on: ubuntu-latest
+
+    env:
+      FTP_HOST: 191.252.83.183
+      FTP_USER: ${{ secrets.LWEB_USER }}
+      FTP_PASS: ${{ secrets.LWEB_PASS }}
+      ZIP_FILE: arq.zip
+
+    steps:
+      - name: 📥 Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: 📁 Criar diretórios
+        run: mkdir -p workspace/unzipped XML
+
+      - name: 📥 Baixar arq.zip via FTP (LocalWeb)
+        run: |
+          curl -u "$FTP_USER:$FTP_PASS" "ftp://$FTP_HOST/$ZIP_FILE" -o workspace/$ZIP_FILE
+
+      - name: 📦 Descompactar arq.zip
+        run: unzip -o workspace/$ZIP_FILE -d workspace/unzipped
+
+      - name: 📂 Copiar arquivos XML para pasta XML do repositório
+        run: |
+          cp workspace/unzipped/*.xml XML/
+
+      - name: 📤 Fazer commit e push dos arquivos XML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add XML/
+          git commit -m "🤖 Atualização automática dos arquivos XML extraídos do arq.zip"
+          git push
