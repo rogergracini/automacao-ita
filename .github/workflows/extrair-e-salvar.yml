@@ -1,0 +1,32 @@
+name: Baixar e Extrair arq.zip
+
+on:
+  workflow_dispatch:  # Acionamento manual
+
+jobs:
+  baixar-extrair:
+    runs-on: ubuntu-latest
+
+    env:
+      FTP_HOST: 191.252.83.183
+      FTP_USER: ${{ secrets.LWEB_USER }}
+      FTP_PASS: ${{ secrets.LWEB_PASS }}
+      ZIP_FILE: arq.zip
+
+    steps:
+      - name: 📁 Criar diretório temporário
+        run: mkdir workspace && cd workspace
+
+      - name: 📥 Baixar arq.zip via FTP (LocalWeb)
+        run: |
+          curl -u "$FTP_USER:$FTP_PASS" "ftp://$FTP_HOST/$ZIP_FILE" -o workspace/$ZIP_FILE
+
+      - name: 📦 Descompactar arq.zip
+        run: |
+          unzip -o workspace/$ZIP_FILE -d workspace/unzipped
+
+      - name: 📤 Publicar arquivos extraídos como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: arquivos-extraidos
+          path: workspace/unzipped
