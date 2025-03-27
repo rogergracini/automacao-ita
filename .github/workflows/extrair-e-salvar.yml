@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: 📁 Criar diretório temporário
-        run: mkdir workspace && cd workspace
+        run: mkdir -p workspace
 
       - name: 📥 Baixar arq.zip via FTP (LocalWeb)
         run: |
@@ -25,8 +25,14 @@ jobs:
         run: |
           unzip -o workspace/$ZIP_FILE -d workspace/unzipped
 
-      - name: 📤 Publicar arquivos extraídos como artefato
+      - name: 📤 Publicar Preco.xml
         uses: actions/upload-artifact@v4
         with:
-          name: arquivos-extraidos
-          path: workspace/unzipped
+          name: Preco.xml
+          path: workspace/unzipped/Preco.xml
+
+      - name: 📤 Publicar Produto.xml
+        uses: actions/upload-artifact@v4
+        with:
+          name: Produto.xml
+          path: workspace/unzipped/Produto.xml
