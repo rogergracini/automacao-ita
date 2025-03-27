@@ -1,7 +1,7 @@
 name: Baixar e Extrair arq.zip
 
 on:
-  workflow_dispatch:  # Acionamento manual
+  workflow_dispatch:  # Permite execução manual no GitHub Actions
 
 jobs:
   baixar-extrair:
@@ -14,25 +14,21 @@ jobs:
       ZIP_FILE: arq.zip
 
     steps:
-      - name: 📁 Criar diretório temporário
-        run: mkdir -p workspace
+      - name: 🗂️ Criar diretórios de trabalho
+        run: mkdir -p workspace/unzipped
 
       - name: 📥 Baixar arq.zip via FTP (LocalWeb)
         run: |
+          echo "🔽 Baixando $ZIP_FILE via FTP..."
           curl -u "$FTP_USER:$FTP_PASS" "ftp://$FTP_HOST/$ZIP_FILE" -o workspace/$ZIP_FILE
 
       - name: 📦 Descompactar arq.zip
         run: |
+          echo "📂 Extraindo conteúdo de $ZIP_FILE..."
           unzip -o workspace/$ZIP_FILE -d workspace/unzipped
 
-      - name: 📤 Publicar Preco.xml
+      - name: 📤 Publicar todos os arquivos extraídos como artefato
         uses: actions/upload-artifact@v4
         with:
-          name: Preco.xml
-          path: workspace/unzipped/Preco.xml
-
-      - name: 📤 Publicar Produto.xml
-        uses: actions/upload-artifact@v4
-        with:
-          name: Produto.xml
-          path: workspace/unzipped/Produto.xml
+          name: arquivos-extraidos
+          path: workspace/unzipped
