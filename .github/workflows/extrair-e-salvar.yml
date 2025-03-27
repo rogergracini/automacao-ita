@@ -1,7 +1,7 @@
 name: Baixar e Extrair arq.zip
 
 on:
-  workflow_dispatch:  # Permite execução manual no GitHub Actions
+  workflow_dispatch:  # Acionamento manual
 
 jobs:
   baixar-extrair:
@@ -27,8 +27,9 @@ jobs:
           echo "📂 Extraindo conteúdo de $ZIP_FILE..."
           unzip -o workspace/$ZIP_FILE -d workspace/unzipped
 
-      - name: 📤 Publicar todos os arquivos extraídos como artefato
+      - name: 📤 Publicar arquivos individualmente (sem zipar)
         uses: actions/upload-artifact@v4
         with:
-          name: arquivos-extraidos
-          path: workspace/unzipped
+          name: arquivos-xml-separados
+          path: workspace/unzipped/*
+          if-no-files-found: error
