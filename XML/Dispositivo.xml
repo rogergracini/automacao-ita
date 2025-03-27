@@ -1,0 +1,10 @@
+<DataSet>
+  <Row>
+    <DispositivoID>20</DispositivoID>
+    <RepresentanteID_Int>82-0</RepresentanteID_Int>
+    <SeqCliente>67</SeqCliente>
+    <PrecoEsp>0</PrecoEsp>
+    <Mercado>1</Mercado>
+    <email>cgaspar@galle.com.br</email>
+  </Row>
+</DataSet>
